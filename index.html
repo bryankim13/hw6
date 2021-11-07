@@ -19,7 +19,11 @@
                 newRow.insertCell(1).textContent = amount.value;
                 newRow.insertCell(2).textContent = transType.value;
                 newRow.insertCell(3).textContent = date.value;
+                
                 newRow.insertCell(4).innerHTML = "<button class =\"btn btn-sm btn-danger\" onclick=\"deleteTransaction();\">Remove</button>";
+                newRow.addEventListener("mouseover", function() {
+                    table.clickedRow = this.rowIndex;
+                });
 
                 transName.value = "";
                 amount.value = "";
@@ -31,6 +35,13 @@
             function saveTable(){
                 var tab = document.getElementById("listTransaction");
                 localStorage.setItem("table", JSON.stringify(tab));
+            }
+
+            function deleteTransaction() {
+                var table = document.getElementById("listTransaction");
+                var delRow = table.clickedRow;
+
+                table.deleteRow(delRow);
             }
         </script>
     </head>
