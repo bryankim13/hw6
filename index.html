@@ -38,16 +38,16 @@
                 newRow.addEventListener("mouseover", function() {
                     table.clickedRow = this.rowIndex;
                 });
-                const data_obj = {tname: transName.value, amount: amount.value, trans_type: transType.value, date: date.value};
-                const json_data = JSON.stringify(data_obj);
-                localStorage.setItem(transName.value, json_data);
-                const json_parsed = JSON.parse(json_data);
-                var sign = json_parsed.trans_type;
+                // const data_obj = {tname: transName.value, amount: amount.value, trans_type: transType.value, date: date.value};
+                // const json_data = JSON.stringify(data_obj);
+                // localStorage.setItem(transName.value, json_data);
+                // const json_parsed = JSON.parse(json_data);
+                var sign = transType.value;
                 if (sign === "credit") {
-                    balance = balance + parseInt(json_parsed.amount);
+                    balance = balance + parseInt(amount.value);
                 }
                 else if (sign === "debit") {
-                    balance = balance - parseInt(json_parsed.amount);
+                    balance = balance - parseInt(amount.value);
 
                 }
                 transName.value = "";
@@ -58,7 +58,13 @@
             }
             function saveTable(){
                 var tab = document.getElementById("listTransaction");
-                localStorage.setItem("table", JSON.stringify(tab));
+                var storageArr = [];
+                for (var row = 0, n = tab.rows.length; row< n; r++) {
+                    const data_obj = {tname: table.rows[r].cells[0], amount: table.rows[r].cells[1], trans_type: table.rows[r].cells[2], date: table.rows[r].cells[3]};
+                    storageArr.push(data_obj);
+                }
+                const json_data = JSON.stringify(storageArr);
+                localStorage.setItem("table", JSON.stringify(json_data));
             }
 
             function deleteTransaction() {
@@ -90,7 +96,7 @@
     <body onunload="saveTable()">
         <div class="container">
             <div class="row">
-                <form name = "add-Transaction" method = "post" onsubmit="return validating();">
+                <form name = "add-Transaction" onsubmit="return validating();">
                     <h1>Add A Transaction</h1>
                     <div class="input-group">
                         <label for="tname" class="form-label">Transaction Name </label>
