@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">  
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="your name">
+        <meta name="author" content="bjk3yf Bryan Kim pso3td Paul Ok">
         <meta name="description" content="include some description about your page">  
         <title>New Transaction</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
@@ -25,6 +25,12 @@
                 amount.value = "";
                 transType.selectedIndex = 0;
                 date.value = date.defaultValue;
+                var tab = document.getElementById("listTransaction");
+                localStorage.setItem("table", JSON.stringify(tab));
+            }
+            function saveTable(){
+                var tab = document.getElementById("listTransaction");
+                localStorage.setItem("table", JSON.stringify(tab));
             }
         </script>
     </head>
@@ -40,7 +46,7 @@
               </div>
             </nav> 
     </header>
-    <body>
+    <body onunload="saveTable()">
         <div class="container">
             <div class="row">
                 <form name = "add-Transaction">
@@ -91,8 +97,7 @@
                 </div>
             </div>
             
-        </div>
-
+        </div>            
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     </body>
 </html>
