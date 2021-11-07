@@ -56,6 +56,7 @@
                 amount.value = "";
                 transType.selectedIndex = 0;
                 date.value = date.defaultValue;
+                return false;
             }
             function saveTable(){
                 var tab = document.getElementById("listTransaction");
@@ -80,6 +81,7 @@
             function deleteTransaction() {
                 var table = document.getElementById("listTransaction");
                 var delRow = table.clickedRow;
+                console.log(delRow);
                 var transName = table.rows[delRow].cells[0].innerHTML;
                 table.deleteRow(delRow);
                 localStorage.deleteRow(transName);
@@ -106,7 +108,7 @@
     <body onload="saveTable()">
         <div class="container">
             <div class="row">
-                <form name = "add-Transaction" method = "post" onsubmit="return validating();">
+                <form name = "add-Transaction" method = "post" onsubmit="return addTransaction();">
                     <h1>Add A Transaction</h1>
                     <div class="input-group">
                         <label for="tname" class="form-label">Transaction Name </label>
@@ -124,7 +126,7 @@
                         <label for="date" class="form-label">Date</label>
                         <input type="date" class="form-control" id="date" placeholder="Date" name="date" required> 
                         <br>
-                        <input type = "submit" class = "btn btn-primary" value="adding" onclick="addTransaction();"/>
+                        <input type = "submit" class = "btn btn-primary" value="adding"/>
                     </div>
                 </form>
             </div>
