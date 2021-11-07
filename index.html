@@ -9,6 +9,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
         <script type = "text/javascript">
             var balance = 0;
+            const obj_arr = [];
             function addTransaction(){
                 var transName = document.getElementById("tname");
                 var amount = document.getElementById("amount");
@@ -38,33 +39,37 @@
                 newRow.addEventListener("mouseover", function() {
                     table.clickedRow = this.rowIndex;
                 });
-                // const data_obj = {tname: transName.value, amount: amount.value, trans_type: transType.value, date: date.value};
-                // const json_data = JSON.stringify(data_obj);
-                // localStorage.setItem(transName.value, json_data);
-                // const json_parsed = JSON.parse(json_data);
-                var sign = transType.value;
+                const data_obj = {tname: transName.value, amount: amount.value, trans_type: transType.value, date: date.value};
+                const json_data = JSON.stringify(data_obj);
+                localStorage.setItem(transName.value, json_data);
+                obj_arr.push(transName.value);
+                const json_parsed = JSON.parse(json_data);
+                var sign = json_parsed.trans_type;
                 if (sign === "credit") {
-                    balance = balance + parseInt(amount.value);
+                    balance = balance + parseInt(json_parsed.amount);
                 }
                 else if (sign === "debit") {
-                    balance = balance - parseInt(amount.value);
+                    balance = balance - parseInt(json_parsed.amount);
 
                 }
                 transName.value = "";
                 amount.value = "";
                 transType.selectedIndex = 0;
                 date.value = date.defaultValue;
-                console.log(localStorage);
             }
             function saveTable(){
                 var tab = document.getElementById("listTransaction");
-                var storageArr = [];
-                for (var row = 0, n = tab.rows.length; row< n; r++) {
-                    const data_obj = {tname: table.rows[r].cells[0], amount: table.rows[r].cells[1], trans_type: table.rows[r].cells[2], date: table.rows[r].cells[3]};
-                    storageArr.push(data_obj);
+                localStorage.setItem("table", JSON.stringify(tab));
+                for (let i=0; i<obj_arr.length; i++) {
+                    const json_par = JSON.parse(localStorage.getItem(obj_arr[i]));
+                    var newRow = tab.insertRow(tab.rows.length);
+                    newRow.insertCell(0).textContent = json_par.tname;
+                    newRow.insertCell(1).textContent = json_par.amount;
+                    newRow.insertCell(2).textContent = json_par.trans_type;
+                    newRow.insertCell(3).textContent = json_par.date;
+                    newRow.insertCell(4).innerHTML = "<button class =\"btn btn-sm btn-danger\" onclick=\"deleteTransaction();\">Remove</button>";
+                    console.log(localStorage.getItem(obj_arr[i]));
                 }
-                const json_data = JSON.stringify(storageArr);
-                localStorage.setItem("table", JSON.stringify(json_data));
             }
 
             function deleteTransaction() {
@@ -96,7 +101,7 @@
     <body onunload="saveTable()">
         <div class="container">
             <div class="row">
-                <form name = "add-Transaction" onsubmit="return validating();">
+                <form name = "add-Transaction" method = "post" onsubmit="return validating();">
                     <h1>Add A Transaction</h1>
                     <div class="input-group">
                         <label for="tname" class="form-label">Transaction Name </label>
@@ -121,6 +126,7 @@
             <br>
             <div style="text-align: center;">
                 <button class ="btn btn-sm btn-danger" onclick="clearTransactions();">Clear Transaction History</button>
+                <button class ="btn btn-sm btn-danger" onclick="saveTable();">Reload</button>
             </div>
             <div>
                 <p>Balance = <span id="bal"></span></p>
