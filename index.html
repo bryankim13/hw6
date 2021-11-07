@@ -117,6 +117,12 @@
                 <button class ="btn btn-sm btn-danger" onclick="clearTransactions();">Clear Transaction History</button>
             </div>
             <div>
+                <p>Balance = <span id="bal"></span></p>
+                <script>
+                    document.getElementById("bal").innerHTML = balance;
+                </script>
+            </div>
+            <div>
                 <div class="row" style="margin-top:30px">
                     <div class="col-12">
                         <table id="listTransaction" class="table">
