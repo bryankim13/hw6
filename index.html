@@ -8,6 +8,7 @@
         <title>New Transaction</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
         <script type = "text/javascript">
+            var balance = 0;
             function addTransaction(){
                 var transName = document.getElementById("tname");
                 var amount = document.getElementById("amount");
@@ -19,29 +20,40 @@
                 newRow.insertCell(1).textContent = amount.value;
                 newRow.insertCell(2).textContent = transType.value;
                 newRow.insertCell(3).textContent = date.value;
-                
                 newRow.insertCell(4).innerHTML = "<button class =\"btn btn-sm btn-danger\" onclick=\"deleteTransaction();\">Remove</button>";
+                
                 newRow.addEventListener("mouseover", function() {
                     table.clickedRow = this.rowIndex;
                 });
+                const data_obj = {tname: transName.value, amount: amount.value, trans_type: transType.value, date: date.value};
+                const json_data = JSON.stringify(data_obj);
+                localStorage.setItem(transName.value, json_data);
+                const json_parsed = JSON.parse(json_data);
+                var sign = json_parsed.trans_type;
+                if (sign === "credit") {
+                    balance = balance + parseInt(json_parsed.amount);
+                }
+                else if (sign === "debit") {
+                    balance = balance - parseInt(json_parsed.amount);
 
+                }
                 transName.value = "";
                 amount.value = "";
                 transType.selectedIndex = 0;
                 date.value = date.defaultValue;
-                var tab = document.getElementById("listTransaction");
-                localStorage.setItem("table", JSON.stringify(tab));
-            }
-            function saveTable(){
-                var tab = document.getElementById("listTransaction");
-                localStorage.setItem("table", JSON.stringify(tab));
+                console.log(localStorage);
             }
 
             function deleteTransaction() {
                 var table = document.getElementById("listTransaction");
                 var delRow = table.clickedRow;
-
+                var transName = table.rows[delRow].cells[0].innerHTML;
                 table.deleteRow(delRow);
+                localStorage.deleteRow(delRow);
+            }
+
+            function clearTransactions() {
+                localStorage.clear();
             }
         </script>
     </head>
@@ -81,6 +93,10 @@
                         <input type = "button" class = "btn btn-primary" value="adding" onclick="addTransaction();"/>
                     </div>
                 </form>
+            </div>
+            <br>
+            <div style="text-align: center;">
+                <button class ="btn btn-sm btn-danger" onclick="clearTransactions();">Clear Transaction History</button>
             </div>
             <div>
                 <div class="row" style="margin-top:30px">
