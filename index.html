@@ -15,6 +15,19 @@
                 var transType = document.getElementById("trans-type");
                 var date = document.getElementById("date");
                 var table = document.getElementById("listTransaction");
+                console.log(transType.value=="credit");
+                if(transType.value == "credit"){
+                    if(amount.value < 0){
+                        alert("Credit must have Positive amounts!");
+                        return false;
+                    }
+                }
+                else{
+                    if(amount.value > 0){
+                    alert("Debits must have negative amounts!");
+                    return false;
+                    }
+                }
                 var newRow = table.insertRow(table.rows.length);
                 newRow.insertCell(0).textContent = transName.value;
                 newRow.insertCell(1).textContent = amount.value;
@@ -43,6 +56,10 @@
                 date.value = date.defaultValue;
                 console.log(localStorage);
             }
+            function saveTable(){
+                var tab = document.getElementById("listTransaction");
+                localStorage.setItem("table", JSON.stringify(tab));
+            }
 
             function deleteTransaction() {
                 var table = document.getElementById("listTransaction");
@@ -55,6 +72,7 @@
             function clearTransactions() {
                 localStorage.clear();
             }
+            
         </script>
     </head>
     <header>
@@ -72,7 +90,7 @@
     <body onunload="saveTable()">
         <div class="container">
             <div class="row">
-                <form name = "add-Transaction">
+                <form name = "add-Transaction" method = "post" onsubmit="return validating();">
                     <h1>Add A Transaction</h1>
                     <div class="input-group">
                         <label for="tname" class="form-label">Transaction Name </label>
@@ -90,7 +108,7 @@
                         <label for="date" class="form-label">Date</label>
                         <input type="date" class="form-control" id="date" placeholder="Date" name="date" required> 
                         <br>
-                        <input type = "button" class = "btn btn-primary" value="adding" onclick="addTransaction();"/>
+                        <input type = "submit" class = "btn btn-primary" value="adding" onclick="addTransaction();"/>
                     </div>
                 </form>
             </div>
@@ -124,7 +142,7 @@
                 </div>
             </div>
             
-        </div>            
+        </div>         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     </body>
 </html>
