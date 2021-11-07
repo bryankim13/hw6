@@ -43,15 +43,9 @@
                 const json_data = JSON.stringify(data_obj);
                 localStorage.setItem(transName.value, json_data);
                 obj_arr.push(transName.value);
-                const json_parsed = JSON.parse(json_data);
-                var sign = json_parsed.trans_type;
-                if (sign === "credit") {
-                    balance = balance + parseInt(json_parsed.amount);
-                }
-                else if (sign === "debit") {
-                    balance = balance - parseInt(json_parsed.amount);
-
-                }
+                balance = balance+parseInt(amount.value);
+                var tBal = document.getElementById("bal");
+                tBal.innerHTML = balance;
                 transName.value = "";
                 amount.value = "";
                 transType.selectedIndex = 0;
@@ -72,7 +66,10 @@
                     newRow.insertCell(4).innerHTML = "<button class =\"btn btn-sm btn-danger\" onclick=\"deleteTransaction();\">Remove</button>";
                     newRow.addEventListener("mouseover", function() {
                     tab.clickedRow = this.rowIndex;
+                    balance = balance + parseInt(json_par.amount);
                 });
+                var tBal = document.getElementById("bal");
+                tBal.innerHTML = balance;
                 }
                 //console.log(Object.keys(localStorage));
 
@@ -135,10 +132,7 @@
                 <button class ="btn btn-sm btn-danger" onclick="clearTransactions();">Clear Transaction History</button>
             </div>
             <div>
-                <p>Balance = <span id="bal"></span></p>
-                <script>
-                    document.getElementById("bal").innerHTML = balance;
-                </script>
+                <p>Balance = <span id="bal">0</span></p>
             </div>
             <div>
                 <div class="row" style="margin-top:30px">
