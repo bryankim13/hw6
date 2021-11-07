@@ -59,17 +59,19 @@
             }
             function saveTable(){
                 var tab = document.getElementById("listTransaction");
-                localStorage.setItem("table", JSON.stringify(tab));
-                for (let i=0; i<obj_arr.length; i++) {
-                    const json_par = JSON.parse(localStorage.getItem(obj_arr[i]));
+                // localStorage.setItem("table", JSON.stringify(tab));
+                var keys = Object.keys(localStorage);
+                for (let i=0; i<keys.length; i++) {
+                    const json_par = JSON.parse(localStorage.getItem(keys[i]));
                     var newRow = tab.insertRow(tab.rows.length);
                     newRow.insertCell(0).textContent = json_par.tname;
                     newRow.insertCell(1).textContent = json_par.amount;
                     newRow.insertCell(2).textContent = json_par.trans_type;
                     newRow.insertCell(3).textContent = json_par.date;
                     newRow.insertCell(4).innerHTML = "<button class =\"btn btn-sm btn-danger\" onclick=\"deleteTransaction();\">Remove</button>";
-                    console.log(localStorage.getItem(obj_arr[i]));
                 }
+                //console.log(Object.keys(localStorage));
+
             }
 
             function deleteTransaction() {
@@ -98,7 +100,7 @@
               </div>
             </nav> 
     </header>
-    <body onunload="saveTable()">
+    <body onload="saveTable()">
         <div class="container">
             <div class="row">
                 <form name = "add-Transaction" method = "post" onsubmit="return validating();">
@@ -126,7 +128,6 @@
             <br>
             <div style="text-align: center;">
                 <button class ="btn btn-sm btn-danger" onclick="clearTransactions();">Clear Transaction History</button>
-                <button class ="btn btn-sm btn-danger" onclick="saveTable();">Reload</button>
             </div>
             <div>
                 <p>Balance = <span id="bal"></span></p>
