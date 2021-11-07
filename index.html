@@ -64,13 +64,14 @@
                     newRow.insertCell(2).textContent = json_par.trans_type;
                     newRow.insertCell(3).textContent = json_par.date;
                     newRow.insertCell(4).innerHTML = "<button class =\"btn btn-sm btn-danger\" onclick=\"deleteTransaction();\">Remove</button>";
+                    balance = balance + parseInt(json_par.amount);
+
                     newRow.addEventListener("mouseover", function() {
                     tab.clickedRow = this.rowIndex;
-                    balance = balance + parseInt(json_par.amount);
                 });
+                }
                 var tBal = document.getElementById("bal");
                 tBal.innerHTML = balance;
-                }
                 //console.log(Object.keys(localStorage));
 
             }
