@@ -71,7 +71,7 @@
                     newRow.insertCell(3).textContent = json_par.date;
                     newRow.insertCell(4).innerHTML = "<button class =\"btn btn-sm btn-danger\" onclick=\"deleteTransaction();\">Remove</button>";
                     newRow.addEventListener("mouseover", function() {
-                    table.clickedRow = this.rowIndex;
+                    tab.clickedRow = this.rowIndex;
                 });
                 }
                 //console.log(Object.keys(localStorage));
@@ -84,7 +84,7 @@
                 console.log(delRow);
                 var transName = table.rows[delRow].cells[0].innerHTML;
                 table.deleteRow(delRow);
-                localStorage.deleteRow(transName);
+                localStorage.removeItem(transName);
             }
 
             function clearTransactions() {
